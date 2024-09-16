@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+import yahooFinance from 'yahoo-finance2';
+
+@Controller('search')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get(':id')
+  async getHello(@Param() params: any): Promise<any> {
+    const query = params.id;
+    const result = await yahooFinance.search(query /* queryOptions */);
+    return result;
   }
 }
